@@ -361,16 +361,6 @@ a:focus-visible {
   pointer-events: auto;
 }
 
-.part-popover::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: calc(100% - 1px);
-  width: 44px;
-  height: 1px;
-  background: var(--green);
-}
-
 .popover-kicker {
   display: flex;
   align-items: center;
@@ -599,10 +589,6 @@ a:focus-visible {
     width: min(310px, calc(100vw - 32px));
     margin-top: 250px;
     margin-left: 0;
-  }
-
-  .part-popover::before {
-    display: none;
   }
 
   .mobile-part-bar {
