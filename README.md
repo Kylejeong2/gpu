@@ -49,14 +49,10 @@ pnpm dev --port 3024
 
 Open [http://localhost:3024](http://localhost:3024).
 
-npm works too, and is what the deployment uses:
+This project uses pnpm, and `packageManager` pins the version so Corepack picks it up automatically. Two committed files carry the configuration:
 
-```bash
-npm ci
-npm run dev -- --port 3024
-```
-
-`package-lock.json` is the committed lockfile, so `pnpm-lock.yaml` is ignored rather than checked in. `pnpm-workspace.yaml` is committed because pnpm 11 refuses to run the `sharp` and `unrs-resolver` install scripts unless they are allowlisted there, and it fails the whole install without them.
+- `pnpm-lock.yaml` is the lockfile. The deployment installs from it with `pnpm install --frozen-lockfile`.
+- `pnpm-workspace.yaml` holds the dependency pins and the build allowlist. pnpm 11 reads both from there rather than from `package.json`, and it fails the install outright if `sharp` and `unrs-resolver` are not allowlisted.
 
 ## Use the explorer
 
@@ -134,8 +130,6 @@ pnpm lint
 pnpm test
 pnpm build
 ```
-
-Every script also runs under npm (`npm run typecheck`, and so on).
 
 The tests cover explorer state, cross-view hover behavior, pointer-anchored previews, explode mode, pointer gesture arbitration, the SXM board proportions, the H100's active HBM3 stack count, the B200's dual-die and eight-stack HBM3e layout, the GB300's CPU, GPU, memory, and connector counts, and the NVL72's tray layout, GPU and CPU totals, and spine extent.
 

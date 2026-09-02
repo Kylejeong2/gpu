@@ -2,6 +2,7 @@
   "name": "gpu-glossary-3d",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@11.22.0",
   "license": "MIT",
   "type": "module",
   "engines": {
@@ -21,7 +22,8 @@
     "next": "15.5.23",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "three": "0.185.1"
+    "three": "0.185.1",
+    "three-stdlib": "2.36.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.3.6",
@@ -33,9 +35,5 @@
     "eslint-config-next": "15.5.23",
     "typescript": "5.9.3",
     "vitest": "4.1.10"
-  },
-  "overrides": {
-    "postcss": "8.5.26",
-    "sharp": "0.35.3"
   }
 }

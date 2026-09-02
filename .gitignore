@@ -3,8 +3,8 @@ node_modules/
 coverage/
 *.tsbuildinfo
 .DS_Store
-npm-debug.log*
+pnpm-debug.log*
 
-# package-lock.json is the committed lockfile, so keep pnpm's out of the repo.
-# pnpm-workspace.yaml is committed on purpose: it holds the build allowlist.
-pnpm-lock.yaml
+# This project uses pnpm. pnpm-lock.yaml and pnpm-workspace.yaml are both
+# committed, so keep npm's lockfile out to stop the two from drifting.
+package-lock.json

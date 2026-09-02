@@ -3,3 +3,8 @@
 allowBuilds:
   sharp: true
   unrs-resolver: true
+
+# Dependency pins. pnpm 11 reads these here rather than from package.json.
+overrides:
+  postcss: "8.5.26"
+  sharp: "0.35.3"
