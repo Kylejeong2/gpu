@@ -8,8 +8,8 @@ export const NVL72_EXHIBIT: Exhibit = {
   exteriorLabel: "GB300 NVL72 RACK",
   description: "An interactive 3D guide to the NVIDIA GB300 NVL72 rack-scale system.",
   camera: {
-    position: [12.6, 11.4, 14.6],
-    target: [0, 4.1, 0],
+    position: [11.2, 15.4, 13.2],
+    target: [0, 3.9, 0],
     minDistance: 11,
     maxDistance: 40,
   },
