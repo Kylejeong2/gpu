@@ -1,20 +1,26 @@
 "use client";
 
-import { RoundedBox, useCursor } from "@react-three/drei";
-import { useRef, useState, type ReactNode } from "react";
-import type { ModelView, PartId, Vec3 } from "@/features/exhibits/h100";
-import { H100_SXM5_GEOMETRY, type BoardPoint } from "./h100Geometry";
-import { isActivationGesture, type PointerPoint } from "./interaction";
+import { RoundedBox } from "@react-three/drei";
+import type { PartId } from "@/features/exhibits";
+import { H100_SXM5_GEOMETRY } from "./h100Geometry";
+import { SmInset } from "./SmInset";
+import {
+  CHIP,
+  ComponentBlock,
+  DARK_METAL,
+  GOLD,
+  GREEN,
+  HbmStack,
+  InteractivePart,
+  METAL,
+  MountingHole,
+  PACKAGE,
+  PCB,
+  PCB_EDGE,
+  paddedHitbox,
+  type ModelProps,
+} from "./modelPrimitives";
 
-const GREEN = "#7fee64";
-const PCB = "#111512";
-const PCB_EDGE = "#080b09";
-const PACKAGE = "#171918";
-const CHIP = "#080a09";
-const COPPER = "#dc6d42";
-const GOLD = "#c7a85b";
-const METAL = "#777b78";
-const DARK_METAL = "#363b38";
 const DIE_COLORS = ["#9a6d2c", "#a58c35", "#728b3f", "#3e8053", "#347271", "#554f7f"] as const;
 
 const DIE_TILES = Array.from(
@@ -24,81 +30,6 @@ const DIE_TILES = Array.from(
     row: Math.floor(index / H100_SXM5_GEOMETRY.dieTileColumns),
   }),
 );
-
-type InteractivePartProps = Readonly<{
-  partId: PartId;
-  children: ReactNode;
-  onPreview: (partId: PartId) => void;
-  onClearPreview: () => void;
-  onActivate: (partId: PartId) => void;
-}>;
-
-function pointFromEvent(event: Readonly<{ nativeEvent: MouseEvent }>): PointerPoint {
-  return { x: event.nativeEvent.clientX, y: event.nativeEvent.clientY };
-}
-
-function InteractivePart({ partId, children, onPreview, onClearPreview, onActivate }: InteractivePartProps) {
-  const [hovered, setHovered] = useState(false);
-  const pressOrigin = useRef<PointerPoint | null>(null);
-  useCursor(hovered, "pointer", "grab");
-
-  return (
-    <group
-      name={`part-${partId}`}
-      userData={{ partId }}
-      onPointerOver={(event) => {
-        event.stopPropagation();
-        setHovered(true);
-        onPreview(partId);
-      }}
-      onPointerOut={(event) => {
-        event.stopPropagation();
-        setHovered(false);
-        onClearPreview();
-      }}
-      onPointerDown={(event) => {
-        event.stopPropagation();
-        pressOrigin.current = pointFromEvent(event);
-      }}
-      onClick={(event) => {
-        event.stopPropagation();
-        const origin = pressOrigin.current;
-        pressOrigin.current = null;
-        if (origin && isActivationGesture({ origin, release: pointFromEvent(event) })) onActivate(partId);
-      }}
-    >
-      {children}
-    </group>
-  );
-}
-
-function ComponentBlock({
-  position,
-  size,
-  color = CHIP,
-  metalness = 0.3,
-}: Readonly<{ position: Vec3; size: Vec3; color?: string; metalness?: number }>) {
-  return (
-    <RoundedBox args={[size[0], size[1], size[2]]} radius={0.035} smoothness={2} position={position} castShadow>
-      <meshStandardMaterial color={color} metalness={metalness} roughness={0.48} />
-    </RoundedBox>
-  );
-}
-
-function MountingHole({ position: [x, z] }: Readonly<{ position: BoardPoint }>) {
-  return (
-    <group position={[x, 0.22, z]}>
-      <mesh>
-        <cylinderGeometry args={[0.2, 0.2, 0.035, 32]} />
-        <meshBasicMaterial color={COPPER} />
-      </mesh>
-      <mesh position={[0, 0.02, 0]}>
-        <cylinderGeometry args={[0.1, 0.1, 0.055, 24]} />
-        <meshStandardMaterial color="#020302" metalness={0.1} roughness={0.8} />
-      </mesh>
-    </group>
-  );
-}
 
 function DieSurface({ active }: Readonly<{ active: boolean }>) {
   const { dieTileColumns, dieTileRows } = H100_SXM5_GEOMETRY;
@@ -127,34 +58,6 @@ function DieSurface({ active }: Readonly<{ active: boolean }>) {
     </group>
   );
 }
-
-function HbmStack({ position: [x, z], highlighted = false }: Readonly<{ position: BoardPoint; highlighted?: boolean }>) {
-  return (
-    <group position={[x, 0.72, z]}>
-      <RoundedBox args={[0.64, 0.15, 0.5]} radius={0.035} smoothness={2} castShadow>
-        <meshStandardMaterial
-          color={highlighted ? "#2f5c2b" : "#202321"}
-          emissive={highlighted ? GREEN : "#000000"}
-          emissiveIntensity={highlighted ? 0.32 : 0}
-          metalness={0.48}
-          roughness={0.38}
-        />
-      </RoundedBox>
-      <mesh position={[0, 0.085, 0]}>
-        <boxGeometry args={[0.48, 0.018, 0.025]} />
-        <meshStandardMaterial color="#6c716d" metalness={0.68} roughness={0.3} />
-      </mesh>
-    </group>
-  );
-}
-
-type ModelProps = Readonly<{
-  activePartId: PartId | null;
-  view: ModelView;
-  onPreview: (partId: PartId) => void;
-  onClearPreview: () => void;
-  onActivate: (partId: PartId) => void;
-}>;
 
 export function H100Model(props: ModelProps) {
   const active = (partId: PartId) => props.activePartId === partId;
@@ -313,25 +216,31 @@ export function H100Model(props: ModelProps) {
               </RoundedBox>
             ))}
           </InteractivePart>
-          <InteractivePart partId="sm" {...interaction}>
+          <InteractivePart partId="sm" hitbox={paddedHitbox([0.48, 0.15, -0.35], [0.17, 0.15, 0.19])} {...interaction}>
             <ComponentBlock position={[0.48, 0.15, -0.35]} size={[0.17, 0.15, 0.19]} color={active("sm") ? GREEN : "#6a9862"} />
           </InteractivePart>
-          <InteractivePart partId="tensor-core" {...interaction}>
+          <InteractivePart partId="tensor-core" hitbox={paddedHitbox([-0.46, 0.17, 0.36], [0.18, 0.18, 0.2])} {...interaction}>
             <ComponentBlock position={[-0.46, 0.17, 0.36]} size={[0.18, 0.18, 0.2]} color={active("tensor-core") ? GREEN : "#8cad87"} />
           </InteractivePart>
-          <InteractivePart partId="cuda-core" {...interaction}>
+          <InteractivePart partId="cuda-core" hitbox={paddedHitbox([0, 0.16, 0.36], [0.27, 0.16, 0.19])} {...interaction}>
             <group position={[0, 0.16, 0.36]}>
               {[-0.1, 0, 0.1].map((x) => (
                 <ComponentBlock key={x} position={[x, 0, 0]} size={[0.065, 0.16, 0.19]} color={active("cuda-core") ? GREEN : "#5f8a58"} />
               ))}
             </group>
           </InteractivePart>
-          <InteractivePart partId="tma" {...interaction}>
+          <InteractivePart partId="tma" hitbox={paddedHitbox([0.47, 0.16, 0.36], [0.18, 0.17, 0.2])} {...interaction}>
             <ComponentBlock position={[0.47, 0.16, 0.36]} size={[0.18, 0.17, 0.2]} color={active("tma") ? GREEN : "#456d42"} />
           </InteractivePart>
+          <SmInset
+            position={[-1.6, 0.3, 2.2]}
+            calloutFrom={[0.48, 0.22, -0.35]}
+            tensorMemory={false}
+            activePartId={props.activePartId}
+            interaction={interaction}
+          />
         </group>
       ) : null}
-
     </group>
   );
 }

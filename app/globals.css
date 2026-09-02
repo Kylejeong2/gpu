@@ -86,6 +86,7 @@ a:focus-visible {
   height: 100%;
   gap: 10px;
   padding: 0 16px;
+  overflow: hidden;
   font-size: 24px;
   letter-spacing: -0.04em;
   white-space: nowrap;
@@ -101,16 +102,35 @@ a:focus-visible {
   color: var(--green-80);
 }
 
-.header-title {
+.gpu-tabs {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
+  min-width: 0;
   height: 100%;
   border-left: 1px solid rgb(127 238 100 / 28%);
   border-right: 1px solid rgb(127 238 100 / 28%);
-  color: var(--green-80);
-  font-size: 14px;
+}
+
+.gpu-tabs a {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  color: var(--green-60);
+  font-size: 13px;
   letter-spacing: 0.08em;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+
+.gpu-tabs a:hover {
+  color: var(--green);
+}
+
+.gpu-tabs a[data-active="true"] {
+  color: var(--ink);
+  border-bottom-color: var(--green);
 }
 
 .header-actions {
@@ -151,6 +171,28 @@ a:focus-visible {
   padding: 5px 9px;
   background: var(--green-10);
   text-transform: uppercase;
+}
+
+.explode-control {
+  padding: 5px 9px;
+  border: 1px solid var(--green-60);
+  background: transparent;
+  color: var(--green-80);
+  font-size: 13px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.explode-control:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.explode-control[data-active="true"] {
+  border-color: var(--green);
+  background: var(--green);
+  color: var(--ground);
 }
 
 .help-button {
@@ -199,7 +241,11 @@ a:focus-visible {
 
 .part-list {
   display: flex;
+  min-height: 0;
   flex-direction: column;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--green-20) transparent;
 }
 
 .part-list a {
@@ -448,11 +494,17 @@ a:focus-visible {
 
 @media (max-width: 1050px) {
   .site-header {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 
-  .header-title {
+  .brand-lockup {
     display: none;
+  }
+
+  .gpu-tabs {
+    justify-content: flex-start;
+    padding-left: 6px;
+    border: 0;
   }
 
   .part-list a {
@@ -490,14 +542,20 @@ a:focus-visible {
     padding: 0 10px;
   }
 
-  .brand-lockup {
-    gap: 7px;
-    padding: 0;
-    font-size: 20px;
+  .gpu-tabs {
+    padding-left: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
   }
 
-  .brand-lockup > span:last-child {
-    font-size: 14px;
+  .gpu-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .gpu-tabs a {
+    flex: 0 0 auto;
+    padding: 0 7px;
+    font-size: 12px;
   }
 
   .header-actions {
@@ -532,6 +590,11 @@ a:focus-visible {
 
   .text-control {
     display: none;
+  }
+
+  .explode-control {
+    padding: 4px 6px;
+    font-size: 11px;
   }
 
   .help-button {

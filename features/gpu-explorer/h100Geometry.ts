@@ -1,4 +1,5 @@
-export type BoardPoint = readonly [x: number, z: number];
+import type { BoardPoint } from "./modelPrimitives";
+
 export type PackageSite = Readonly<{ position: BoardPoint; kind: "memory" | "structural" }>;
 
 function grid(xs: readonly number[], zs: readonly number[]): readonly BoardPoint[] {
