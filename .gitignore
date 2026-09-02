@@ -5,8 +5,7 @@ coverage/
 .DS_Store
 npm-debug.log*
 
-# This project installs with npm ci and commits package-lock.json. A pnpm
-# install writes a second lockfile and a nested node_modules layout that
-# eslint-config-next cannot load, so keep pnpm artifacts out of the repo.
+# package-lock.json is the committed lockfile, so keep a second one out of
+# the repo. The install itself works under either package manager.
 pnpm-lock.yaml
 pnpm-workspace.yaml
