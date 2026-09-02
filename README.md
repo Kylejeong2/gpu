@@ -40,19 +40,23 @@ Modal's glossary is the primary editorial and design reference for this project.
 
 ## Run the site
 
-Install the dependencies:
+Install the dependencies and start the development server on port 3024:
 
 ```bash
-npm ci
-```
-
-Start the development server on port 3024:
-
-```bash
-npm run dev -- --port 3024
+pnpm install
+pnpm dev --port 3024
 ```
 
 Open [http://localhost:3024](http://localhost:3024).
+
+npm works too, and is what the deployment uses:
+
+```bash
+npm ci
+npm run dev -- --port 3024
+```
+
+`package-lock.json` is the committed lockfile, so `pnpm-lock.yaml` is ignored rather than checked in. `pnpm-workspace.yaml` is committed because pnpm 11 refuses to run the `sharp` and `unrs-resolver` install scripts unless they are allowlisted there, and it fails the whole install without them.
 
 ## Use the explorer
 
@@ -125,11 +129,13 @@ features/
 Run the full local verification set:
 
 ```bash
-npm run typecheck
-npm run lint
-npm test
-npm run build
+pnpm typecheck
+pnpm lint
+pnpm test
+pnpm build
 ```
+
+Every script also runs under npm (`npm run typecheck`, and so on).
 
 The tests cover explorer state, cross-view hover behavior, pointer-anchored previews, explode mode, pointer gesture arbitration, the SXM board proportions, the H100's active HBM3 stack count, the B200's dual-die and eight-stack HBM3e layout, the GB300's CPU, GPU, memory, and connector counts, and the NVL72's tray layout, GPU and CPU totals, and spine extent.
 

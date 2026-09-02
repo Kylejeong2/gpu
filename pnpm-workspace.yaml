@@ -1,0 +1,5 @@
+# sharp and unrs-resolver ship native binaries and need their install scripts
+# to run. pnpm 11 blocks build scripts unless they are allowlisted here.
+allowBuilds:
+  sharp: true
+  unrs-resolver: true

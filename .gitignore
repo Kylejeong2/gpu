@@ -5,7 +5,6 @@ coverage/
 .DS_Store
 npm-debug.log*
 
-# package-lock.json is the committed lockfile, so keep a second one out of
-# the repo. The install itself works under either package manager.
+# package-lock.json is the committed lockfile, so keep pnpm's out of the repo.
+# pnpm-workspace.yaml is committed on purpose: it holds the build allowlist.
 pnpm-lock.yaml
-pnpm-workspace.yaml
