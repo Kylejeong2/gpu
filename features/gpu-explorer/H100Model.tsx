@@ -69,7 +69,7 @@ export function H100Model(props: ModelProps) {
 
   return (
     <group name="h100-sxm5" rotation={[0, -0.08, 0]} position={[0, 0.08, 0]}>
-      <RoundedBox
+      <RoundedBox name="model-base"
         args={[
           H100_SXM5_GEOMETRY.boardSize[0],
           H100_SXM5_GEOMETRY.boardSize[1],

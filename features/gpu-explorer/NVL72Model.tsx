@@ -328,7 +328,7 @@ function RackFrame({ sidePanels, progress }: Readonly<{ sidePanels: boolean; pro
           </Exploding>
         )),
       )}
-      <mesh position={[0, floorY + plinthHeight / 2, 0]} receiveShadow>
+      <mesh name="model-base" position={[0, floorY + plinthHeight / 2, 0]} receiveShadow>
         <boxGeometry args={[width, plinthHeight, depth]} />
         <meshStandardMaterial color="#0f1312" metalness={0.5} roughness={0.5} />
       </mesh>

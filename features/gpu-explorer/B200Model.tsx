@@ -161,7 +161,7 @@ export function B200Model(props: ModelProps) {
 
   return (
     <group name="b200-sxm6" rotation={[0, -0.08, 0]} position={[0, 0.08, 0]}>
-      <RoundedBox
+      <RoundedBox name="model-base"
         args={[B200_SXM6_GEOMETRY.boardSize[0], B200_SXM6_GEOMETRY.boardSize[1], B200_SXM6_GEOMETRY.boardSize[2]]}
         radius={0.16}
         smoothness={4}

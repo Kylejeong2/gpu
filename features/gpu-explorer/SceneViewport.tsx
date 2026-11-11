@@ -113,6 +113,28 @@ function explodedAnchor(scene: Object3D, partId: PartId): Vec3 | null {
   return [center.x, center.y, center.z];
 }
 
+function SceneFloor({ exhibitId }: Readonly<{ exhibitId: Exhibit["id"] }>) {
+  const scene = useThree((state) => state.scene);
+  const [floorY, setFloorY] = useState<number | null>(null);
+
+  useLayoutEffect(() => {
+    const base = scene.getObjectByName("model-base");
+    if (base) {
+      base.updateWorldMatrix(true, false);
+      setFloorY(new Box3().setFromObject(base).min.y);
+    }
+  }, [scene, exhibitId]);
+
+  if (floorY === null) return null;
+
+  return (
+    <>
+      <gridHelper args={[18, 36, "#315e2a", "#173214"]} position={[0, floorY, 0]} />
+      <ContactShadows position={[0, floorY, 0]} opacity={0.7} scale={11} blur={2.5} far={5} color="#020602" />
+    </>
+  );
+}
+
 export function SceneViewport(props: SceneViewportProps) {
   const controlsRef = useRef<OrbitControlsInstance | null>(null);
   const reducedMotion = useReducedMotion();
@@ -167,8 +189,7 @@ export function SceneViewport(props: SceneViewportProps) {
           />
         ) : null}
 
-        <gridHelper args={[18, 36, "#315e2a", "#173214"]} position={[0, -0.52, 0]} />
-        <ContactShadows position={[0, -0.5, 0]} opacity={0.7} scale={11} blur={2.5} far={5} color="#020602" />
+        <SceneFloor exhibitId={props.exhibit.id} />
         <OrbitControls
           ref={controlsRef}
           makeDefault
