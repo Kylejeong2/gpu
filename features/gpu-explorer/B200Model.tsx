@@ -234,17 +234,6 @@ export function B200Model(props: ModelProps) {
         interaction={interaction}
       />
 
-      <group name="power-controller-daughterboard" position={[3.26, 0.53, -1.43]} rotation={[0, -0.06, 0]}>
-        <RoundedBox args={[1.08, 0.1, 0.76]} radius={0.035} smoothness={2}>
-          <meshStandardMaterial color="#243b26" metalness={0.24} roughness={0.65} />
-        </RoundedBox>
-        <ComponentBlock position={[-0.26, 0.12, 0.03]} size={[0.34, 0.16, 0.34]} />
-        <ComponentBlock position={[0.25, 0.12, -0.13]} size={[0.26, 0.14, 0.22]} />
-        {[-0.35, -0.12, 0.11, 0.34].map((x) => (
-          <ComponentBlock key={x} position={[x, 0.12, 0.29]} size={[0.11, 0.12, 0.12]} color="#a5a59c" metalness={0.78} />
-        ))}
-      </group>
-
       {props.view === "architecture" ? (
         <group name="illustrative-die-architecture" position={[0, 0.92, 0]}>
           <mesh>
