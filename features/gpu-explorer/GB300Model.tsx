@@ -112,7 +112,7 @@ export function GB300Model(props: ModelProps) {
 
   return (
     <group name="gb300-superchip" rotation={[0, -0.08, 0]} position={[0, 0.08, 0]}>
-      <RoundedBox args={[boardSize[0], boardSize[1], boardSize[2]]} radius={0.16} smoothness={4} castShadow receiveShadow>
+      <RoundedBox name="model-base" args={[boardSize[0], boardSize[1], boardSize[2]]} radius={0.16} smoothness={4} castShadow receiveShadow>
         <meshStandardMaterial color={PCB_EDGE} metalness={0.28} roughness={0.68} />
       </RoundedBox>
       <RoundedBox args={[boardSize[0] - 0.12, 0.1, boardSize[2] - 0.12]} radius={0.13} smoothness={3} position={[0, 0.13, 0]}>

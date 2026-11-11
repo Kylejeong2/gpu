@@ -250,6 +250,7 @@ a:focus-visible {
 
 .part-list a {
   display: grid;
+  flex-shrink: 0;
   grid-template-columns: 34px minmax(0, 1fr) auto;
   align-items: center;
   min-height: 44px;
